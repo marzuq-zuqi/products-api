@@ -1,1 +1,0 @@
-ALTER TABLE product ADD COLUMN quantity INT DEFAULT 0;

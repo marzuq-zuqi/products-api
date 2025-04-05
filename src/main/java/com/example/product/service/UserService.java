@@ -15,9 +15,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public AppUser createUser(String username, String password, String role) {
+    public AppUser createUser(String username,String email, String password, String role) {
         AppUser user = new AppUser();
         user.setUsername(username);
+        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
 

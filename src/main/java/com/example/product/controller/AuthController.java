@@ -28,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody JwtRequest request) {
-        AppUser user = userService.createUser(request.getUsername(), request.getPassword(), request.getRole());
+        AppUser user = userService.createUser(request.getUsername(),request.getEmail(), request.getPassword(), request.getRole());
         return ResponseEntity.ok("User " + user.getUsername() + " registered successfully!");
     }
 
