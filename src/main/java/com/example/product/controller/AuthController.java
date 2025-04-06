@@ -26,6 +26,11 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Backend is up and healthy.");
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody JwtRequest request) {
         AppUser user = userService.createUser(request.getUsername(),request.getEmail(), request.getPassword(), request.getRole());
