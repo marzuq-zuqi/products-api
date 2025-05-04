@@ -33,10 +33,18 @@ public class JwtFilter extends GenericFilterBean {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String authHeader = httpRequest.getHeader("Authorization");
+        String token = null;
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+        if (httpRequest.getCookies() != null) {
+            for (var cookie : httpRequest.getCookies()) {
+                if ("auth_token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token != null) {
             try {
                 String username = jwtUtil.extractUsername(token);
 
@@ -54,6 +62,11 @@ public class JwtFilter extends GenericFilterBean {
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 httpResponse.setContentType("application/json");
                 httpResponse.getWriter().write("{\"error\": \"Token has expired. Please log in again.\"}");
+                return;
+            } catch (Exception e) {
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.setContentType("application/json");
+                httpResponse.getWriter().write("{\"error\": \"Invalid token.\"}");
                 return;
             }
         }

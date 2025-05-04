@@ -3,6 +3,8 @@ package com.example.product.service;
 import com.example.product.model.Product;
 import com.example.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +22,15 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+//    public List<Product> getAllProducts() {
+//        return productRepository.findAll();
+//    }
+    public Page<Product> getAllProducts(String search, Pageable pageable) {
+        if (search != null && !search.isEmpty()) {
+            return (Page<Product>) productRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            return productRepository.findAll(pageable);
+        }
     }
 
     public Optional<Product> getProductById(@PathVariable Long id){
@@ -52,7 +61,8 @@ public class ProductService {
     public void deleteProduct(Long id){
         productRepository.deleteById(id);
     }
-    public List<Product> searchProducts(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
+    public Page<Product> searchProducts(String name, Pageable pageable) {
+        return productRepository.findByNameContainingIgnoreCase(name, pageable);
     }
+
 }
