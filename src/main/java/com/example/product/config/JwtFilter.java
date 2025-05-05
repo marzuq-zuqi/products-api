@@ -33,6 +33,14 @@ public class JwtFilter extends GenericFilterBean {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+
+        String path = httpRequest.getRequestURI();
+
+        if (path.startsWith("/auth/login") || path.startsWith("/auth/register") || path.startsWith("/auth/user")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String token = null;
 
         if (httpRequest.getCookies() != null) {
