@@ -2,11 +2,11 @@ package com.example.product.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.processing.Generated;
-
 @Getter
 @Setter
 @Entity
@@ -15,7 +15,6 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
     @NotBlank(message = "Product name is required")
@@ -35,10 +34,8 @@ public class Product {
     @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;
 
-//    public Product(String name, double price, int quantity, String description) {
-//        this.name = name;
-//        this.price = price;
-//        this.quantity = quantity;
-//        this.description = description;
-//    }
+    private String imageUrl;
+
+    @ManyToOne
+    private Category category;
 }

@@ -22,9 +22,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-//    public List<Product> getAllProducts() {
-//        return productRepository.findAll();
-//    }
     public Page<Product> getAllProducts(String search, Pageable pageable) {
         if (search != null && !search.isEmpty()) {
             return (Page<Product>) productRepository.findByNameContainingIgnoreCase(search, pageable);
@@ -49,6 +46,7 @@ public class ProductService {
     }
 
     public Product updateProduct(Long id, Product updatedProduct) {
+
         return productRepository.findById(id).map(product -> {
             product.setName(updatedProduct.getName());
             product.setPrice(updatedProduct.getPrice());
